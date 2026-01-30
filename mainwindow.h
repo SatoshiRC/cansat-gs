@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGridLayout>
+
+#include "View/ModeSelector/ModeSelector.hpp"
+#include "View/StateViewer/StateViewer.hpp"
+#include "View/SerialConfigure.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +22,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    Ui::MainWindow* getUi(){
+        return ui;
+    }
+
 private:
     Ui::MainWindow *ui;
+    QWidget *centralWidget;
+    QGridLayout *layout;
+
+    SerialConfigure *serialConfiger;
+    ModeSelector *modeSelector;
+    StateViwer *stateViewr;
 };
 #endif // MAINWINDOW_H

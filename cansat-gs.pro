@@ -9,10 +9,22 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    View/ModeSelector/ModeSelector.cpp \
+    View/console/console.cpp \
+    View/StateViewer/StateViewer.cpp \
+    View/SerialConfigure.cpp \
+    View/console/console_ready.cpp \
+    View/console/counter.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    View/ModeSelector/ModeSelector.hpp \
+    View/console/console.hpp \
+    View/StateViewer/StateViewer.hpp \
+    View/SerialConfigure.hpp \
+    View/console/console_ready.h \
+    View/console/counter.h \
     mainwindow.h
 
 FORMS += \
