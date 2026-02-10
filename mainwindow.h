@@ -7,6 +7,7 @@
 #include "View/ModeSelector/ModeSelector.hpp"
 #include "View/StateViewer/StateViewer.hpp"
 #include "View/SerialConfigure.hpp"
+#include "View/console/console.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -34,5 +35,6 @@ private:
     SerialConfigure *serialConfiger;
     ModeSelector *modeSelector;
     StateViwer *stateViewr;
+    Console *console;
 };
 #endif // MAINWINDOW_H

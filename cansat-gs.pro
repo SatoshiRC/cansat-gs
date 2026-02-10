@@ -1,4 +1,5 @@
 QT       += core gui
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,6 +16,7 @@ SOURCES += \
     View/SerialConfigure.cpp \
     View/console/console_ready.cpp \
     View/console/counter.cpp \
+    View/console/servo.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -25,6 +27,7 @@ HEADERS += \
     View/SerialConfigure.hpp \
     View/console/console_ready.h \
     View/console/counter.h \
+    View/console/servo.h \
     mainwindow.h
 
 FORMS += \

@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include "servo.h"
 
 class Console : public QWidget{
     Q_OBJECT
@@ -20,6 +23,11 @@ private:
     };
     QMap<uint8_t, QWidget*> childs;
     uint8_t activeKey;
+
+    QHBoxLayout *layout;
+    servo *ParachuteLeft;
+    servo *ParachuteRight;
+    servo *Stabilizer;
 
 };
 #endif //CONSOLE_HPP

@@ -1,6 +1,6 @@
 #include "counter.h"
 
-Counter::Counter(QWidget *parent,int16_t upperLim, int16_t lowerLim, QString name)
+Counter::Counter(QWidget *parent, int16_t lowerLim, int16_t upperLim, QString name)
     : QWidget{parent},
     upperLim(upperLim),
     lowerLim(lowerLim)
@@ -20,6 +20,53 @@ Counter::Counter(QWidget *parent,int16_t upperLim, int16_t lowerLim, QString nam
     layout->addWidget(valueText,1,2,1,1,Qt::AlignTop);
     layout->addWidget(plusButton,1,3,1,1,Qt::AlignTop);
     layout->setRowStretch(2,1);
+    layout->setColumnStretch(4,1);
 
-    valueText->setText(QString::number(layout->verticalSpacing()));
+    connect(plusButton, &QPushButton::clicked, this, &Counter::increment);
+    connect(minusButton, &QPushButton::clicked, this, &Counter::decrement);
+    connect(valueText, &QLineEdit::textEdited, this, &Counter::edit);
+
+    setValue(lowerLim);
+    valueText->setValidator(new QIntValidator(lowerLim, upperLim, this));
+}
+
+void Counter::increment(int16_t delta){
+    if(delta <= 0){
+        delta = 1;
+    }
+    if(currentValue + delta < upperLim){
+        setValue(currentValue + delta);
+    }else{
+        setValue(upperLim);
+    }
+}
+
+void Counter::decrement(int16_t delta){
+    if(delta >= 0){
+        delta = -1;
+    }
+    if(currentValue + delta > lowerLim){
+        setValue(currentValue + delta);
+    }else{
+        setValue(lowerLim);
+    }
+}
+
+void Counter::edit(const QString &text){
+    setValue(text.toInt());
+}
+
+void Counter::setValue(int16_t value){
+    currentValue = value;
+    valueText->setText(QString::number(currentValue));
+    emit onChangeValue(currentValue);
+}
+
+void Counter::wheelEvent(QWheelEvent *event){
+    qint16 steps = event->angleDelta().y() / 120 * 5;
+    if(steps > 0){
+        increment(steps);
+    }else{
+        decrement(steps);
+    }
 }

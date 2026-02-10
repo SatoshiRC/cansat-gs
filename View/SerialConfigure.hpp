@@ -8,11 +8,21 @@
 #include<QComboBox>
 #include<QPushButton>
 #include<QStackedWidget>
+#include<QtSerialPort/QSerialPortInfo>
 
 class SerialConfigure : public QWidget {
     Q_OBJECT
 public:
     SerialConfigure(QWidget *parent = nullptr);
+
+private slots:
+    void onScan();
+    void onConnect();
+    void onDisconnect();
+
+signals:
+    void serialDisconnect();
+    void serialConnect(QSerialPortInfo port, qint32 baudrate);
 
 private:
     QHBoxLayout *layout;
