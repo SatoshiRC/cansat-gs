@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     View/ModeSelector/ModeSelector.cpp \
+    View/StateViewer/altitudeview.cpp \
     View/console/console.cpp \
     View/StateViewer/StateViewer.cpp \
     View/SerialConfigure.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     View/ModeSelector/ModeSelector.hpp \
+    View/StateViewer/altitudeview.h \
     View/console/console.hpp \
     View/StateViewer/StateViewer.hpp \
     View/SerialConfigure.hpp \

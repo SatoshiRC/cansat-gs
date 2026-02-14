@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , layout(new QGridLayout(centralWidget))
     , serialConfiger(new SerialConfigure(centralWidget))
     , modeSelector(new ModeSelector(centralWidget))
+    , stateViewr(new StateViwer(centralWidget))
     , console(new Console(centralWidget))
 {
     ui->setupUi(this);
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(serialConfiger,0,0,1,2);
     layout->addWidget(modeSelector,1,0);
     layout->addWidget(console, 1,1);
+    layout->addWidget(stateViewr, 2, 0, 1, 2);
 
 
     modeSelector->addMode(1, "Debug");
