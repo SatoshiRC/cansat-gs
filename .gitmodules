@@ -1,0 +1,3 @@
+[submodule "cansat_command"]
+	path = cansat_command
+	url = git@github.com:SatoshiRC/cansat_command.git
