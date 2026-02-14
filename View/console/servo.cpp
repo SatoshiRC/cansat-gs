@@ -2,7 +2,7 @@
 
 servo::servo(QWidget *parent, QString name)
     : QWidget{parent},
-    layout(new QVBoxLayout(this)),
+    layout(new QGridLayout(this)),
     name(new QLabel("Servo : "+name, this)),
     openButton(new QPushButton("Open",this)),
     centerButton(new QPushButton("Center", this)),
@@ -20,14 +20,13 @@ servo::servo(QWidget *parent, QString name)
     centerButton->setFont(f);
     closeButton->setFont(f);
 
-    layout->addWidget(this->name);
-    auto buttons = new QHBoxLayout(this);
-    layout->addLayout(buttons);
-    buttons->addWidget(openButton);
-    buttons->addWidget(centerButton);
-    buttons->addWidget(closeButton);
-    layout->addWidget(upper);
-    layout->addWidget(center);
-    layout->addWidget(lower);
-    layout->addStretch();
+    layout->addWidget(this->name, 0, 0, 1, 3);
+    layout->setColumnStretch(3, 1);
+    layout->addWidget(openButton, 1, 0);
+    layout->addWidget(centerButton, 1, 1);
+    layout->addWidget(closeButton, 1, 2);
+    layout->addWidget(upper, 2, 0, 1, 3, Qt::AlignLeft);
+    layout->addWidget(center, 3, 0, 1, 3, Qt::AlignLeft);
+    layout->addWidget(lower, 4, 0, 1, 3, Qt::AlignLeft);
+    layout->setRowStretch(5,1);
 }

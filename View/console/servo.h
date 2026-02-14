@@ -3,8 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QPushButton>
 #include <QFont>
 #include <QString>
@@ -19,7 +18,7 @@ public:
 signals:
 
 private:
-    QVBoxLayout *layout;
+    QGridLayout *layout;
     QLabel *name;
     QPushButton *openButton;
     QPushButton *centerButton;
