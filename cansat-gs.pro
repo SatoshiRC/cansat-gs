@@ -17,6 +17,9 @@ SOURCES += \
     View/console/console_ready.cpp \
     View/console/counter.cpp \
     View/console/servo.cpp \
+    cansat_command/CommandHandlerBase.cpp \
+    cansat_command/CommandHandlers.cpp \
+    cansat_command/CommandManager.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -28,6 +31,10 @@ HEADERS += \
     View/console/console_ready.h \
     View/console/counter.h \
     View/console/servo.h \
+    cansat_command/Inc/CommandDataType.hpp \
+    cansat_command/Inc/CommandHandlerBase.h \
+    cansat_command/Inc/CommandHandlers.hpp \
+    cansat_command/Inc/CommandManager.h \
     mainwindow.h
 
 FORMS += \
@@ -37,3 +44,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    cansat_command/.gitignore
