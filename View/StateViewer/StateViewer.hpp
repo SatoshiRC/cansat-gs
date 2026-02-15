@@ -10,9 +10,9 @@ class StateViwer : public QWidget{
 public:
     StateViwer(QWidget *parent = nullptr);
 
+    AltitudeView *altitudeView;
 private:
     QGridLayout *layout;
-    AltitudeView *altitudeView;
 };
 
 #endif //STAT_EVIEWER_HPP

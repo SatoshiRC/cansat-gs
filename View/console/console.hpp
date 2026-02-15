@@ -13,6 +13,9 @@ public:
     Console(QWidget *parent = nullptr);
     void addMode(uint8_t id, QWidget *child);
 
+    servo *ParachuteLeft;
+    servo *ParachuteRight;
+    servo *Stabilizer;
 public slots:
     void modeChange(uint8_t id){};
 
@@ -25,9 +28,6 @@ private:
     uint8_t activeKey;
 
     QHBoxLayout *layout;
-    servo *ParachuteLeft;
-    servo *ParachuteRight;
-    servo *Stabilizer;
 
 };
 #endif //CONSOLE_HPP
