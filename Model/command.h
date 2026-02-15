@@ -5,7 +5,7 @@
 #include <QSerialPort>
 #include "cansat_command/Inc/CommandManager.h"
 
-class Command : public QObject, command::CommandManager{
+class Command : public QObject, public command::CommandManager{
     Q_OBJECT
     QSerialPort *serialPort;
 public:

@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     Model/command.cpp \
+    VM/commandvm.cpp \
     View/ModeSelector/ModeSelector.cpp \
     View/StateViewer/altitudeview.cpp \
     View/console/console.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     Model/command.h \
+    VM/commandvm.h \
     View/ModeSelector/ModeSelector.hpp \
     View/StateViewer/altitudeview.h \
     View/console/console.hpp \
