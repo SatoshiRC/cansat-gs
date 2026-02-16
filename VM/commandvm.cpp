@@ -1,6 +1,23 @@
 #include "commandvm.h"
 
 commandVM::commandVM(QObject *parent)
+    : QObject{parent}
+{
+    serial =  new QSerialPort(this);
+    manager = new Command(this, serial);
+    (*manager)[command::COMMAND_ID::ConnectionCheck] = static_cast<command::Base*>(&connectionCheck);
+    (*manager)[command::COMMAND_ID::SensorStatus] = static_cast<command::Base*>(&sensorStatus);
+    (*manager)[command::COMMAND_ID::Request] = static_cast<command::Base*>(&request);
+    (*manager)[command::COMMAND_ID::Goal] = static_cast<command::Base*>(&goal);
+    (*manager)[command::COMMAND_ID::Altitude] = static_cast<command::Base*>(&altitude);
+    (*manager)[command::COMMAND_ID::Mode] = static_cast<command::Base*>(&mode);
+    (*manager)[command::COMMAND_ID::AbsoluteNavigationLog] = static_cast<command::Base*>(&absoluteNavigation);
+    (*manager)[command::COMMAND_ID::RelativeNavigationLog] = static_cast<command::Base*>(&relativeNavigation);
+    (*manager)[command::COMMAND_ID::ServoConfig_prachuteLeft] = static_cast<command::Base*>(&servoConfigParachuteLeft);
+    (*manager)[command::COMMAND_ID::ServoConfig_prachuteRight] = static_cast<command::Base*>(&servoConfigParachuteRight);
+    (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStavilizer);
+}
+
 bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
     serial->setBaudRate(baudrate);
     serial->setPort(portInfo);
@@ -54,5 +71,5 @@ void commandVM::catchSerialError(QSerialPort::SerialPortError error){
 
 void commandVM::setMode(qint16 mode){
     this->mode.setData(mode);
-    manager.transmit(command::COMMAND_ID::Mode);
+    manager->transmit(command::COMMAND_ID::Mode);
 }

@@ -11,7 +11,7 @@ class commandVM : public QObject
 {
     Q_OBJECT
 
-    Command manager;
+    Command *manager;
     command::ConnectionCheck connectionCheck;
     command::SensorStatus sensorStatus;
     command::Request request;
