@@ -51,8 +51,9 @@ void SerialConfigure::onConnect(){
     QSerialPortInfo portInfo(portSelect->currentData().toString());
     qint32 baudrate = baudrateSelect->currentData().toUInt();
 
-    emit serialConnect(portInfo, baudrate);
-    stackeButton->setCurrentWidget(disconnectButton);
+    if(emit serialConnect(portInfo, baudrate)){
+        stackeButton->setCurrentWidget(disconnectButton);
+    }
 }
 
 void SerialConfigure::onDisconnect(){

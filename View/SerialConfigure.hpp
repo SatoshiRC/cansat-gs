@@ -22,7 +22,7 @@ private slots:
 
 signals:
     void serialDisconnect();
-    void serialConnect(QSerialPortInfo port, qint32 baudrate);
+    bool serialConnect(QSerialPortInfo port, qint32 baudrate);
 
 private:
     QHBoxLayout *layout;

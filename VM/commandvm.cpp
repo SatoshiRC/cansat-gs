@@ -1,14 +1,10 @@
 #include "commandvm.h"
 
 commandVM::commandVM(QObject *parent)
-    : QObject{parent},
-    serial(new QSerialPort(this))
-{}
-
-void commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
+bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
     serial->setBaudRate(baudrate);
     serial->setPort(portInfo);
-    serial->open(QIODeviceBase::ReadWrite);
+    return serial->open(QIODeviceBase::ReadWrite);
 }
 
 void commandVM::disconnectSerial(){

@@ -29,7 +29,7 @@ public:
     explicit commandVM(QObject *parent = nullptr);
 
 public slots:
-    void connectSerial(QSerialPortInfo portInfo, qint32 baudrate);
+    bool connectSerial(QSerialPortInfo portInfo, qint32 baudrate);
     void disconnectSerial();
     void readyReadSerial();
     void catchSerialError(QSerialPort::SerialPortError error);
