@@ -15,4 +15,12 @@ void ModeSelector::addMode(uint8_t id, QString key){
     buttons[id] = new QPushButton(this);
     buttons[id]->setText(key);
     layout->insertWidget(layout->count()-1,buttons[id]);
+    auto clickHandler = new ModeClickHandler(this, id);
+    connect(buttons[id], &QPushButton::clicked, clickHandler, &ModeClickHandler::click);
+    connect(clickHandler, &ModeClickHandler::clicked, this, &ModeSelector::modeChange);
+}
+
+void ModeSelector::modeChange(uint8_t id){
+    currentMode->setText(buttons[id]->text());
+    emit modeChanged(id);
 }
