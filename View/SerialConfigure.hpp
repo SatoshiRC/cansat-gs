@@ -20,6 +20,8 @@ private slots:
     void onConnect();
     void onDisconnect();
 
+public slots:
+    void onErrorDisconnect();
 signals:
     void serialDisconnect();
     bool serialConnect(QSerialPortInfo port, qint32 baudrate);

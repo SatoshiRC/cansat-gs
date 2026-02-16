@@ -60,3 +60,7 @@ void SerialConfigure::onDisconnect(){
     emit serialDisconnect();
     stackeButton->setCurrentWidget(connectButton);
 }
+
+void SerialConfigure::onErrorDisconnect(){
+    stackeButton->setCurrentWidget(connectButton);
+}
