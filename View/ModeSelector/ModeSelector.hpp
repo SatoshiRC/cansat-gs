@@ -18,6 +18,7 @@ public:
 
 public slots:
     void modeChange(uint8_t id);
+    void clicked(uint8_t id);
 
 signals:
     void modeChanged(uint8_t id);
