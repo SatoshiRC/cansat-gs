@@ -16,6 +16,8 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteLeft] = static_cast<command::Base*>(&servoConfigParachuteLeft);
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteRight] = static_cast<command::Base*>(&servoConfigParachuteRight);
     (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStavilizer);
+
+    connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
 }
 
 bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
