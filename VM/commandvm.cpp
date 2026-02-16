@@ -30,7 +30,7 @@ void commandVM::disconnectSerial(){
 
 void commandVM::readyReadSerial(){
     QByteArray read = serial->readAll();
-    auto id = manager.receive(read.begin(), read.end());
+    auto id = manager->receive(read.begin(), read.end());
     switch(id){
     case command::COMMAND_ID::ConnectionCheck:
         break;
@@ -46,6 +46,7 @@ void commandVM::readyReadSerial(){
                             altitude.getData().temperature());
         break;
     case command::COMMAND_ID::Mode:
+        emit modeUpdated(mode.getData());
         break;
     case command::COMMAND_ID::AbsoluteNavigationLog:
         break;

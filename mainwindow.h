@@ -9,6 +9,8 @@
 #include "View/SerialConfigure.hpp"
 #include "View/console/console.hpp"
 
+#include "VM/commandvm.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -36,5 +38,9 @@ private:
     ModeSelector *modeSelector;
     StateViwer *stateViewr;
     Console *console;
+
+    commandVM *commandVm;
+
+    void binding();
 };
 #endif // MAINWINDOW_H
