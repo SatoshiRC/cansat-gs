@@ -1,7 +1,8 @@
 #include "commandvm.h"
 
 commandVM::commandVM(QObject *parent)
-    : QObject{parent}
+    : QObject{parent},
+    serial(new QSerialPort(this))
 {}
 
 void commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
