@@ -52,4 +52,6 @@ void MainWindow::binding(){
 
     connect(modeSelector, &ModeSelector::modeChanged, commandVm, &commandVM::setMode);
     connect(commandVm, &commandVM::modeUpdated, modeSelector, &ModeSelector::modeChange);
+
+    connect(commandVm, &commandVM::altitudeUpdated, stateViewr->altitudeView, &AltitudeView::update);
 }

@@ -11,6 +11,9 @@ class AltitudeView : public QWidget
 public:
     explicit AltitudeView(QWidget *parent = nullptr);
 
+public slots:
+    void update(qint16 altitude, float pressure, float temperature);
+
 signals:
 
 private:

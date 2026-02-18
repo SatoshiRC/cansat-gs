@@ -31,3 +31,9 @@ AltitudeView::AltitudeView(QWidget *parent)
     layout->addWidget(temperature,3,2,Qt::AlignRight);
     layout->addWidget(new QLabel("[\u2103]", this), 3, 3, Qt::AlignLeft);
 }
+
+void AltitudeView::update(qint16 altitude, float pressure, float temperature){
+    this->altitude->setText(QString::number(altitude));
+    this->pressure->setText(QString::number(pressure, 'f', 2));
+    this->temperature->setText(QString::number(temperature, 'f', 1));
+}
