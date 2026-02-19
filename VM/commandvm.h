@@ -23,6 +23,7 @@ class commandVM : public QObject
     command::ServoConfig_prachuteLeft servoConfigParachuteLeft;
     command::ServoConfig_prachuteRight servoConfigParachuteRight;
     command::ServoConfig_stabilizer servoConfigStavilizer;
+    command::Gps gps;
 
     QSerialPort *serial;
 public:
@@ -41,6 +42,7 @@ signals:
 
     void altitudeUpdated(qint16 altitude, float pressure, float temperature);
     void modeUpdated(qint16 mode);
+    void gpsUpdated(double latitude, double longitude, qint16 fixStatus);
 };
 
 #endif // COMMANDVM_H

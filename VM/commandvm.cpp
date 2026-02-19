@@ -16,6 +16,7 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteLeft] = static_cast<command::Base*>(&servoConfigParachuteLeft);
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteRight] = static_cast<command::Base*>(&servoConfigParachuteRight);
     (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStavilizer);
+    (*manager)[command::COMMAND_ID::GPS] = static_cast<command::Base*>(&gps);
 
     connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
 }
@@ -59,6 +60,11 @@ void commandVM::readyReadSerial(){
     case command::COMMAND_ID::ServoConfig_prachuteRight:
         break;
     case command::COMMAND_ID::ServoConfig_stabilizer:
+        break;
+    case command::COMMAND_ID::GPS:
+        emit gpsUpdated(gps.getData().latitude(),
+                        gps.getData().longitude(),
+                        gps.getData().fixStatus());
         break;
     default:
         break;

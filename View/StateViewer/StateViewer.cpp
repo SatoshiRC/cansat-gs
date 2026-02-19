@@ -2,10 +2,12 @@
 
 StateViwer::StateViwer(QWidget *parent)
     :QWidget(parent),
-    layout(new QGridLayout(this)),
-    altitudeView(new AltitudeView(this))
+    altitudeView(new AltitudeView(this)),
+    gpsStatusView(new GpsStatusView(this)),
+    layout(new QGridLayout(this))
 {
     layout->setColumnStretch(1,1);
     layout->setRowStretch(1,1);
     layout->addWidget(altitudeView,0,0);
+    layout->addWidget(gpsStatusView, 1, 0);
 }

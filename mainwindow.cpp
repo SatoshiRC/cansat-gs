@@ -54,4 +54,5 @@ void MainWindow::binding(){
     connect(commandVm, &commandVM::modeUpdated, modeSelector, &ModeSelector::modeChange);
 
     connect(commandVm, &commandVM::altitudeUpdated, stateViewr->altitudeView, &AltitudeView::update);
+    connect(commandVm, &commandVM::gpsUpdated, stateViewr->gpsStatusView, &GpsStatusView::update);
 }

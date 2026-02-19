@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include "altitudeview.h"
+#include "gpsstatusview.h"
 
 class StateViwer : public QWidget{
     Q_OBJECT
@@ -11,6 +12,7 @@ public:
     StateViwer(QWidget *parent = nullptr);
 
     AltitudeView *altitudeView;
+    GpsStatusView *gpsStatusView;
 private:
     QGridLayout *layout;
 };
