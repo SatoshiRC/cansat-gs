@@ -3,6 +3,8 @@
 commandVM::commandVM(QObject *parent)
     : QObject{parent}
 {
+    file = new QFile(this);
+
     serial =  new QSerialPort(this);
     manager = new Command(this, serial);
     (*manager)[command::COMMAND_ID::ConnectionCheck] = static_cast<command::Base*>(&connectionCheck);
@@ -81,4 +83,85 @@ void commandVM::catchSerialError(QSerialPort::SerialPortError error){
 void commandVM::setMode(qint16 mode){
     this->mode.setData(mode);
     manager->transmit(command::COMMAND_ID::Mode);
+}
+
+void commandVM::exportData(std::filesystem::path &name){
+    if(file->openMode() != QIODeviceBase::NotOpen){
+        file->close();
+    }
+    file->setFileName(name);
+    file->open(QIODeviceBase::ReadWrite);
+    exportData();
+}
+
+void commandVM::exportData(){
+    if(file->openMode() == QIODeviceBase::NotOpen){
+        return;
+    }
+    QJsonObject rootObj;
+
+    QJsonObject subObj;
+    subObj["latitude"] = goal.getData().latitude();
+    subObj["longitude"] = goal.getData().longitude();
+    rootObj.insert("Goal", subObj);
+
+    subObj = QJsonObject();
+    subObj["openCount"] = servoConfigParachuteLeft.getData().openCount();
+    subObj["centerCount"] = servoConfigParachuteLeft.getData().centerCount();
+    subObj["closeCount"] = servoConfigParachuteLeft.getData().closeCount();
+    rootObj.insert("servoConfigParachuteLeft", subObj);
+
+    subObj = QJsonObject();
+    subObj["openCount"] = servoConfigParachuteRight.getData().openCount();
+    subObj["centerCount"] = servoConfigParachuteRight.getData().centerCount();
+    subObj["closeCount"] = servoConfigParachuteRight.getData().closeCount();
+    rootObj.insert("servoConfigParachuteRight", subObj);
+
+    subObj = QJsonObject();
+    subObj["openCount"] = servoConfigStavilizer.getData().openCount();
+    subObj["centerCount"] = servoConfigStavilizer.getData().centerCount();
+    subObj["closeCount"] = servoConfigStavilizer.getData().closeCount();
+    rootObj.insert("servoConfigStavilizer", subObj);
+
+    file->write(QJsonDocument(rootObj).toJson());
+
+}
+
+void commandVM::loadData(std::filesystem::path &name){
+    if(file->openMode() != QIODeviceBase::NotOpen && file->fileName() != QString(name.filename().native())){
+        file->close();
+        file->setFileName(name);
+        file->open(QIODeviceBase::ReadWrite);
+    }
+    auto raw = file->readAll();
+    QJsonObject rootObj = QJsonDocument::fromJson(raw).object();
+    QJsonObject subObj;
+
+    subObj = rootObj["Goal"].toObject();
+    CommandDataType::Coordinates goal;
+    goal.latitude() = subObj["latitude"].toDouble();
+    goal.longitude() = subObj["longitude"].toDouble();
+    this->goal.setData(goal);
+
+    subObj = rootObj["servoConfigParachuteLeft"].toObject();
+    CommandDataType::ServoConfig servoConfig;
+    servoConfig.openCount() = subObj["openCout"].toInt(1000);
+    servoConfig.centerCount() = subObj["centerCout"].toInt(1000);
+    servoConfig.closeCount() = subObj["closeCout"].toInt(1000);
+    servoConfig.state() = CommandDataType::ServoState::Center;
+    this->servoConfigParachuteLeft.setData(servoConfig);
+
+    subObj = rootObj["servoConfigParachuteRight"].toObject();
+    servoConfig.openCount() = subObj["openCout"].toInt(1000);
+    servoConfig.centerCount() = subObj["centerCout"].toInt(1000);
+    servoConfig.closeCount() = subObj["closeCout"].toInt(1000);
+    servoConfig.state() = CommandDataType::ServoState::Center;
+    this->servoConfigParachuteRight.setData(servoConfig);
+
+    subObj = rootObj["servoConfigStavilizer"].toObject();
+    servoConfig.openCount() = subObj["openCout"].toInt(1000);
+    servoConfig.centerCount() = subObj["centerCout"].toInt(1000);
+    servoConfig.closeCount() = subObj["closeCout"].toInt(1000);
+    servoConfig.state() = CommandDataType::ServoState::Center;
+    this->servoConfigStavilizer.setData(servoConfig);
 }

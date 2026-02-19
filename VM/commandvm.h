@@ -4,8 +4,12 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "Model/command.h"
+
 
 class commandVM : public QObject
 {
@@ -26,6 +30,7 @@ class commandVM : public QObject
     command::Gps gps;
 
     QSerialPort *serial;
+    QFile *file;
 public:
     explicit commandVM(QObject *parent = nullptr);
 
@@ -34,6 +39,10 @@ public slots:
     void disconnectSerial();
     void readyReadSerial();
     void catchSerialError(QSerialPort::SerialPortError error);
+
+    void exportData(std::filesystem::path &name);
+    void exportData();
+    void loadData(std::filesystem::path &name);
 
     void setMode(qint16 mode);
 
