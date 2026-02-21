@@ -23,7 +23,7 @@ GpsStatusView::GpsStatusView(QWidget *parent)
 
     layout->addWidget(new QLabel("Longitude", this), 2, 0, Qt::AlignCenter);
     layout->addWidget(new QLabel(" : ", this), 2, 1, Qt::AlignCenter);
-    layout->addWidget(longitude,1,2,Qt::AlignRight);
+    layout->addWidget(longitude,2,2,Qt::AlignRight);
     layout->addWidget(new QLabel("[\u00b0]", this), 2, 3, Qt::AlignLeft);
 
     layout->addWidget(new QLabel("Fix", this), 3, 0, Qt::AlignCenter);
@@ -33,7 +33,7 @@ GpsStatusView::GpsStatusView(QWidget *parent)
 
 
 void GpsStatusView::update(double latitude, double longitude, qint8 fix){
-    this->latitude->setText(QString::number(latitude, 'f', 4));
-    this->longitude->setText(QString::number(longitude, 'f', 4));
+    this->latitude->setText(QString::number(latitude, 'f', 6));
+    this->longitude->setText(QString::number(longitude, 'f', 6));
     this->fixStatus->setText(QString::number(fix));
 }
