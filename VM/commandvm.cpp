@@ -165,3 +165,15 @@ void commandVM::loadData(std::filesystem::path &name){
     servoConfig.state() = CommandDataType::ServoState::Center;
     this->servoConfigStavilizer.setData(servoConfig);
 }
+
+void commandVM::setGoal(double latitude, double longitude){
+    CommandDataType::Coordinates coord;
+    coord.latitude() = latitude;
+    coord.longitude() = longitude;
+    this->goal.setData(coord);
+}
+
+std::array<double, 2> commandVM::requestedCurrentLocation(){
+    std::array<double, 2> res = {gps.getData().latitude(), gps.getData().longitude()};
+    return res;
+}

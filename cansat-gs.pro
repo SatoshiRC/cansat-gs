@@ -21,6 +21,7 @@ SOURCES += \
     View/console/console_ready.cpp \
     View/console/counter.cpp \
     View/console/servo.cpp \
+    View/console/setgoalview.cpp \
     cansat_command/CommandHandlerBase.cpp \
     cansat_command/CommandHandlers.cpp \
     cansat_command/CommandManager.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     View/console/console_ready.h \
     View/console/counter.h \
     View/console/servo.h \
+    View/console/setgoalview.h \
     cansat_command/Inc/CommandDataType.hpp \
     cansat_command/Inc/CommandHandlerBase.h \
     cansat_command/Inc/CommandHandlers.hpp \

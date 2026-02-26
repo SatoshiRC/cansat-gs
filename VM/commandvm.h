@@ -46,6 +46,9 @@ public slots:
 
     void setMode(qint16 mode);
 
+    void setGoal(double latitude, double longitude);
+    std::array<double, 2> requestedCurrentLocation();
+
 signals:
     void disconnected();
 

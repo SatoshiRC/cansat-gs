@@ -3,23 +3,19 @@
 Console::Console(QWidget *parent)
     :QWidget(parent)
 {
-    layout = new QHBoxLayout(this);
+    layout = new QGridLayout(this);
 
     ParachuteLeft = new servo(this, "Parachute-Left");
     ParachuteRight = new servo(this, "Parachute-Right");
     Stabilizer = new servo(this, "Stabilizer");
 
-    auto firstCol = new QVBoxLayout(this);
-    layout->addLayout(firstCol);
-    firstCol->addWidget(ParachuteLeft);
-    firstCol->addWidget(ParachuteRight);
-    firstCol->addStretch(1);
+    setGoal = new SetGoalView(this);
 
-    auto SecondCol = new QVBoxLayout(this);
-    layout->addLayout(SecondCol);
-    SecondCol->addWidget(Stabilizer);
-    SecondCol->addStretch(1);
+    layout->setColumnStretch(3,1);
+    layout->addWidget(ParachuteLeft, 0, 0);
+    layout->addWidget(ParachuteRight, 0, 1);
+    layout->addWidget(Stabilizer, 0, 2);
 
-    layout->addStretch(1);
+    layout->addWidget(setGoal, 1, 0, 1, 2, Qt::AlignLeft);
 
 }

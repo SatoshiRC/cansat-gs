@@ -55,4 +55,7 @@ void MainWindow::binding(){
 
     connect(commandVm, &commandVM::altitudeUpdated, stateViewr->altitudeView, &AltitudeView::update);
     connect(commandVm, &commandVM::gpsUpdated, stateViewr->gpsStatusView, &GpsStatusView::update);
+
+    connect(console->setGoal, &SetGoalView::requestCurrentLocation, commandVm, &commandVM::requestedCurrentLocation);
+    connect(console->setGoal, &SetGoalView::goalUpdated, commandVm, &commandVM::setGoal);
 }

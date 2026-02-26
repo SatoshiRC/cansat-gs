@@ -3,9 +3,9 @@
 
 #include <QWidget>
 #include <QMap>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include "servo.h"
+#include "setgoalview.h"
 
 class Console : public QWidget{
     Q_OBJECT
@@ -16,6 +16,8 @@ public:
     servo *ParachuteLeft;
     servo *ParachuteRight;
     servo *Stabilizer;
+
+    SetGoalView *setGoal;
 public slots:
     void modeChange(uint8_t id){};
 
@@ -27,7 +29,7 @@ private:
     QMap<uint8_t, QWidget*> childs;
     uint8_t activeKey;
 
-    QHBoxLayout *layout;
+    QGridLayout *layout;
 
 };
 #endif //CONSOLE_HPP
