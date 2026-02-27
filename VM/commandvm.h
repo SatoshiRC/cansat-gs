@@ -28,6 +28,7 @@ class commandVM : public QObject
     command::ServoConfig_prachuteRight servoConfigParachuteRight;
     command::ServoConfig_stabilizer servoConfigStavilizer;
     command::Gps gps;
+    command::Imu imu;
 
     QSerialPort *serial;
     QFile *file;
@@ -55,6 +56,9 @@ signals:
     void altitudeUpdated(qint16 altitude, float pressure, float temperature);
     void modeUpdated(qint16 mode);
     void gpsUpdated(double latitude, double longitude, qint16 fixStatus);
+    void accelUpdated(std::array<float, 3> arg);
+    void gyroUpdated(std::array<float, 3> arg);
+    void magnetUpdated(std::array<float, 3> arg);
 };
 
 #endif // COMMANDVM_H

@@ -15,6 +15,7 @@ SOURCES += \
     View/ModeSelector/ModeSelector.cpp \
     View/StateViewer/altitudeview.cpp \
     View/StateViewer/gpsstatusview.cpp \
+    View/StateViewer/imuview.cpp \
     View/console/console.cpp \
     View/StateViewer/StateViewer.cpp \
     View/SerialConfigure.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     View/ModeSelector/ModeSelector.hpp \
     View/StateViewer/altitudeview.h \
     View/StateViewer/gpsstatusview.h \
+    View/StateViewer/imuview.h \
     View/console/console.hpp \
     View/StateViewer/StateViewer.hpp \
     View/SerialConfigure.hpp \

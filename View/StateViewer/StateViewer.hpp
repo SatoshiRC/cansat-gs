@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include "altitudeview.h"
 #include "gpsstatusview.h"
+#include "imuview.h"
 
 class StateViwer : public QWidget{
     Q_OBJECT
@@ -13,6 +14,7 @@ public:
 
     AltitudeView *altitudeView;
     GpsStatusView *gpsStatusView;
+    ImuView *imuView;
 private:
     QGridLayout *layout;
 };

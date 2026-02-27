@@ -19,6 +19,7 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteRight] = static_cast<command::Base*>(&servoConfigParachuteRight);
     (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStavilizer);
     (*manager)[command::COMMAND_ID::GPS] = static_cast<command::Base*>(&gps);
+    (*manager)[command::COMMAND_ID::IMU] = static_cast<command::Base*>(&imu);
 
     connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
 }
@@ -67,6 +68,11 @@ void commandVM::readyReadSerial(){
         emit gpsUpdated(gps.getData().latitude(),
                         gps.getData().longitude(),
                         gps.getData().fixStatus());
+        break;
+    case command::COMMAND_ID::IMU:
+        emit accelUpdated(imu.getData().accel());
+        emit gyroUpdated(imu.getData().gyro());
+        emit magnetUpdated(imu.getData().magnet());
         break;
     default:
         break;
