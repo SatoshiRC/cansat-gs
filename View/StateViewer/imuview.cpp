@@ -53,7 +53,7 @@ ImuView::ImuView(QWidget *parent)
     layout->addWidget(new QLabel("Magnet"), 9, 0, 1, 4, Qt::AlignLeft);
     layout->addWidget(new QLabel("m_x"), 10, 0, Qt::AlignLeft);
     layout->addWidget(new QLabel(" : ", this), 10, 1, Qt::AlignCenter);
-    layout->addWidget(mxLabel,2,2,Qt::AlignRight);
+    layout->addWidget(mxLabel,10,2,Qt::AlignRight);
     layout->addWidget(new QLabel("[uT]", this), 10, 3, Qt::AlignLeft);
     layout->addWidget(new QLabel("m_y"), 11, 0, Qt::AlignLeft);
     layout->addWidget(new QLabel(" : ", this), 11, 1, Qt::AlignCenter);

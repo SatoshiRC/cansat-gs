@@ -5,9 +5,9 @@ Console::Console(QWidget *parent)
 {
     layout = new QGridLayout(this);
 
-    ParachuteLeft = new servo(this, "Parachute-Left");
-    ParachuteRight = new servo(this, "Parachute-Right");
-    Stabilizer = new servo(this, "Stabilizer");
+    ParachuteLeft = new servo(this, "Parachute-Left", 1);
+    ParachuteRight = new servo(this, "Parachute-Right", 2);
+    Stabilizer = new servo(this, "Stabilizer", 3);
 
     setGoal = new SetGoalView(this);
 

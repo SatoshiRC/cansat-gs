@@ -52,10 +52,20 @@ void MainWindow::binding(){
 
     connect(modeSelector, &ModeSelector::modeChanged, commandVm, &commandVM::setMode);
     connect(commandVm, &commandVM::modeUpdated, modeSelector, &ModeSelector::modeChange);
+    connect(console->setGoal, &SetGoalView::requestCurrentLocation, commandVm, &commandVM::requestedCurrentLocation);
+    connect(console->setGoal, &SetGoalView::goalUpdated, commandVm, &commandVM::setGoal);
+    connect(commandVm, &commandVM::goalUpdated, console->setGoal, &SetGoalView::goalUpdate);
 
     connect(commandVm, &commandVM::altitudeUpdated, stateViewr->altitudeView, &AltitudeView::update);
     connect(commandVm, &commandVM::gpsUpdated, stateViewr->gpsStatusView, &GpsStatusView::update);
+    connect(commandVm, &commandVM::accelUpdated, stateViewr->imuView, &ImuView::updateAccel);
+    connect(commandVm, &commandVM::gyroUpdated, stateViewr->imuView, &ImuView::updateGyro);
+    connect(commandVm, &commandVM::magnetUpdated, stateViewr->imuView, &ImuView::updateMagnet);
 
-    connect(console->setGoal, &SetGoalView::requestCurrentLocation, commandVm, &commandVM::requestedCurrentLocation);
-    connect(console->setGoal, &SetGoalView::goalUpdated, commandVm, &commandVM::setGoal);
+    connect(console->ParachuteLeft, &servo::updated, commandVm, &commandVM::updateServo);
+    connect(console->ParachuteRight, &servo::updated, commandVm, &commandVM::updateServo);
+    connect(console->Stabilizer, &servo::updated, commandVm, &commandVM::updateServo);
+    connect(commandVm, &commandVM::servoParachuteLeftUpdated, console->ParachuteLeft, &servo::update);
+    connect(commandVm, &commandVM::servoParachuteRightUpdated, console->ParachuteRight, &servo::update);
+    connect(commandVm, &commandVM::servoStablizerUpdated, console->Stabilizer, &servo::update);
 }

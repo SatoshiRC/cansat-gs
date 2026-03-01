@@ -15,13 +15,13 @@ class Counter : public QWidget
 public:
     explicit Counter(QWidget *parent = nullptr, int16_t lowerLim = 0,int16_t upperLim = 0, QString name = "'");
     int16_t getValue(){
-        return currentValue;
+        return valueText->text().toInt();
     }
 
 public slots:
     void increment(int16_t delta = 1);
     void decrement(int16_t delta = -1);
-    void edit(const QString &text);
+    void edit();
     void setValue(int16_t value);
 
 signals:
@@ -36,7 +36,6 @@ private:
 
     int16_t upperLim;
     int16_t lowerLim;
-    int16_t currentValue;
 
     void wheelEvent(QWheelEvent *event);
 };

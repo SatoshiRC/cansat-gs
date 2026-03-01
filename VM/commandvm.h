@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimer>
 
 #include "Model/command.h"
 
@@ -26,7 +27,7 @@ class commandVM : public QObject
     command::RelativeNavigation relativeNavigation;
     command::ServoConfig_prachuteLeft servoConfigParachuteLeft;
     command::ServoConfig_prachuteRight servoConfigParachuteRight;
-    command::ServoConfig_stabilizer servoConfigStavilizer;
+    command::ServoConfig_stabilizer servoConfigStabilizer;
     command::Gps gps;
     command::Imu imu;
 
@@ -50,6 +51,8 @@ public slots:
     void setGoal(double latitude, double longitude);
     std::array<double, 2> requestedCurrentLocation();
 
+    void updateServo(uint8_t servoNum, uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t _state);
+
 signals:
     void disconnected();
 
@@ -59,6 +62,11 @@ signals:
     void accelUpdated(std::array<float, 3> arg);
     void gyroUpdated(std::array<float, 3> arg);
     void magnetUpdated(std::array<float, 3> arg);
+    void goalUpdated(double latitude, double longitude);
+
+    void servoParachuteLeftUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
+    void servoParachuteRightUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
+    void servoStablizerUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
 };
 
 #endif // COMMANDVM_H

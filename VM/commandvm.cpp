@@ -17,17 +17,32 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::RelativeNavigationLog] = static_cast<command::Base*>(&relativeNavigation);
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteLeft] = static_cast<command::Base*>(&servoConfigParachuteLeft);
     (*manager)[command::COMMAND_ID::ServoConfig_prachuteRight] = static_cast<command::Base*>(&servoConfigParachuteRight);
-    (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStavilizer);
+    (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStabilizer);
     (*manager)[command::COMMAND_ID::GPS] = static_cast<command::Base*>(&gps);
     (*manager)[command::COMMAND_ID::IMU] = static_cast<command::Base*>(&imu);
 
     connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
+    connect(serial, &QSerialPort::errorOccurred, this, &commandVM::catchSerialError);
 }
 
 bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
     serial->setBaudRate(baudrate);
     serial->setPort(portInfo);
-    return serial->open(QIODeviceBase::ReadWrite);
+    bool res = serial->open(QIODeviceBase::ReadWrite);
+    if(res == true){
+        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_prachuteLeft);
+        manager->transmit(command::COMMAND_ID::Request);
+        QTimer::singleShot(200,[](){});
+        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_prachuteRight);
+        manager->transmit(command::COMMAND_ID::Request);
+        QTimer::singleShot(200,[](){});
+        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_stabilizer);
+        manager->transmit(command::COMMAND_ID::Request);
+        QTimer::singleShot(200,[](){});
+        request.setRequestCommandId(command::COMMAND_ID::Goal);
+        manager->transmit(command::COMMAND_ID::Request);
+    }
+    return res;
 }
 
 void commandVM::disconnectSerial(){
@@ -36,7 +51,15 @@ void commandVM::disconnectSerial(){
 
 void commandVM::readyReadSerial(){
     QByteArray read = serial->readAll();
-    auto id = manager->receive(read.begin(), read.end());
+    if(read.isEmpty()){
+        return;
+    }
+    // Convert QByteArray to std::vector<uint8_t> for safe iteration
+    std::vector<uint8_t> data(read.size());
+    std::copy(read.begin(), read.end(), data.begin());
+    auto id = manager->receive(data.begin(), data.end());
+
+    CommandDataType::ServoConfig servoConfig;
     switch(id){
     case command::COMMAND_ID::ConnectionCheck:
         break;
@@ -45,6 +68,7 @@ void commandVM::readyReadSerial(){
     case command::COMMAND_ID::Request:
         break;
     case command::COMMAND_ID::Goal:
+        emit goalUpdated(goal.getData().latitude(), goal.getData().longitude());
         break;
     case command::COMMAND_ID::Altitude:
         emit altitudeUpdated(altitude.getData().altitude(),
@@ -59,10 +83,16 @@ void commandVM::readyReadSerial(){
     case command::COMMAND_ID::RelativeNavigationLog:
         break;
     case command::COMMAND_ID::ServoConfig_prachuteLeft:
+        servoConfig = servoConfigParachuteLeft.getData();
+        emit servoParachuteLeftUpdated(servoConfig.openCount(), servoConfig.closeCount(), servoConfig.centerCount(), static_cast<uint8_t>(servoConfig.state()));
         break;
     case command::COMMAND_ID::ServoConfig_prachuteRight:
+        servoConfig = servoConfigParachuteRight.getData();
+        emit servoParachuteRightUpdated(servoConfig.openCount(), servoConfig.closeCount(), servoConfig.centerCount(), static_cast<uint8_t>(servoConfig.state()));
         break;
     case command::COMMAND_ID::ServoConfig_stabilizer:
+        servoConfig = servoConfigStabilizer.getData();
+        emit servoStablizerUpdated(servoConfig.openCount(), servoConfig.closeCount(), servoConfig.centerCount(), static_cast<uint8_t>(servoConfig.state()));
         break;
     case command::COMMAND_ID::GPS:
         emit gpsUpdated(gps.getData().latitude(),
@@ -124,9 +154,9 @@ void commandVM::exportData(){
     rootObj.insert("servoConfigParachuteRight", subObj);
 
     subObj = QJsonObject();
-    subObj["openCount"] = servoConfigStavilizer.getData().openCount();
-    subObj["centerCount"] = servoConfigStavilizer.getData().centerCount();
-    subObj["closeCount"] = servoConfigStavilizer.getData().closeCount();
+    subObj["openCount"] = servoConfigStabilizer.getData().openCount();
+    subObj["centerCount"] = servoConfigStabilizer.getData().centerCount();
+    subObj["closeCount"] = servoConfigStabilizer.getData().closeCount();
     rootObj.insert("servoConfigStavilizer", subObj);
 
     file->write(QJsonDocument(rootObj).toJson());
@@ -169,7 +199,7 @@ void commandVM::loadData(std::filesystem::path &name){
     servoConfig.centerCount() = subObj["centerCout"].toInt(1000);
     servoConfig.closeCount() = subObj["closeCout"].toInt(1000);
     servoConfig.state() = CommandDataType::ServoState::Center;
-    this->servoConfigStavilizer.setData(servoConfig);
+    this->servoConfigStabilizer.setData(servoConfig);
 }
 
 void commandVM::setGoal(double latitude, double longitude){
@@ -182,4 +212,28 @@ void commandVM::setGoal(double latitude, double longitude){
 std::array<double, 2> commandVM::requestedCurrentLocation(){
     std::array<double, 2> res = {gps.getData().latitude(), gps.getData().longitude()};
     return res;
+}
+
+void commandVM::updateServo(uint8_t servoNum, uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t _state){
+    command::COMMAND_ID id;
+    CommandDataType::ServoConfig config;
+    config.openCount() = _openCount;
+    config.closeCount() = _closeCount;
+    config.centerCount() = _centerCount;
+    config.state() = static_cast<CommandDataType::ServoState>(_state);
+    switch(servoNum){
+    case 1:
+        id = command::COMMAND_ID::ServoConfig_prachuteLeft;
+        this->servoConfigParachuteLeft.setData(config);
+        break;
+    case 2:
+        id = command::COMMAND_ID::ServoConfig_prachuteRight;
+        this->servoConfigParachuteRight.setData(config);
+        break;
+    case 3:
+        id = command::COMMAND_ID::ServoConfig_stabilizer;
+        this->servoConfigStabilizer.setData(config);
+        break;
+    }
+    manager->transmit(id);
 }

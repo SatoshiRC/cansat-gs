@@ -24,7 +24,7 @@ Counter::Counter(QWidget *parent, int16_t lowerLim, int16_t upperLim, QString na
 
     connect(plusButton, &QPushButton::clicked, this, &Counter::increment);
     connect(minusButton, &QPushButton::clicked, this, &Counter::decrement);
-    connect(valueText, &QLineEdit::textEdited, this, &Counter::edit);
+    connect(valueText, &QLineEdit::returnPressed, this, &Counter::edit);
 
     setValue(lowerLim);
     valueText->setValidator(new QIntValidator(lowerLim, upperLim, this));
@@ -34,6 +34,7 @@ void Counter::increment(int16_t delta){
     if(delta <= 0){
         delta = 1;
     }
+    uint16_t currentValue = valueText->text().toInt();
     if(currentValue + delta < upperLim){
         setValue(currentValue + delta);
     }else{
@@ -45,6 +46,7 @@ void Counter::decrement(int16_t delta){
     if(delta >= 0){
         delta = -1;
     }
+    uint16_t currentValue = valueText->text().toInt();
     if(currentValue + delta > lowerLim){
         setValue(currentValue + delta);
     }else{
@@ -52,11 +54,12 @@ void Counter::decrement(int16_t delta){
     }
 }
 
-void Counter::edit(const QString &text){
-    setValue(text.toInt());
+void Counter::edit(){
+    setValue(valueText->text().toInt());
 }
 
 void Counter::setValue(int16_t value){
+    uint16_t currentValue = valueText->text().toInt();
     currentValue = value;
     valueText->setText(QString::number(currentValue));
     emit onChangeValue(currentValue);

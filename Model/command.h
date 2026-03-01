@@ -8,6 +8,7 @@
 class Command : public QObject, public command::CommandManager{
     Q_OBJECT
     QSerialPort *serialPort;
+    std::array<uint8_t, 64> txBuffer;
 public:
     Command() = default;
     Command(QObject *parent, QSerialPort *serialPort);
