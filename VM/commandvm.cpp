@@ -58,7 +58,8 @@ void commandVM::readyReadSerial(){
     // Convert QByteArray to std::vector<uint8_t> for safe iteration
     std::vector<uint8_t> data(read.size());
     std::copy(read.begin(), read.end(), data.begin());
-    auto id = manager->receive(data.begin(), data.end());
+    manager->receive(data.begin(), data.end());
+    auto id = manager->processReceive();
 
     CommandDataType::ServoConfig servoConfig;
     switch(id){
