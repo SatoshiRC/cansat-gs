@@ -41,6 +41,7 @@ bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
         QTimer::singleShot(200,[](){});
         request.setRequestCommandId(command::COMMAND_ID::Goal);
         manager->transmit(command::COMMAND_ID::Request);
+        QTimer::singleShot(200,[](){});
     }
     return res;
 }
@@ -207,6 +208,7 @@ void commandVM::setGoal(double latitude, double longitude){
     coord.latitude() = latitude;
     coord.longitude() = longitude;
     this->goal.setData(coord);
+    manager->transmit(command::COMMAND_ID::Goal);
 }
 
 std::array<double, 2> commandVM::requestedCurrentLocation(){

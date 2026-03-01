@@ -39,19 +39,34 @@ servo::servo(QWidget *parent, QString name, uint8_t id)
     connect(closeButton, &QPushButton::clicked, this, &servo::onCloseClicked);
 }
 
-void servo::update(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state){
+void servo::update(uint16_t openCount, uint16_t closeCount, uint16_t centerCount, uint8_t state){
+    _openCount = openCount;
+    _closeCount = closeCount;
+    _centerCount = centerCount;
     upper->setValue(_openCount);
     center->setValue(_centerCount);
     lower->setValue(_closeCount);
 }
 
 void servo::openCountUpdated(int16_t value){
+    if(_openCount == value){
+        return;
+    }
+    _openCount = value;
     emit updated(id, upper->getValue(), lower->getValue(), center->getValue(), 1);
 }
 void servo::centerCountUpdated(int16_t value){
+    if(_centerCount == value){
+        return;
+    }
+    _centerCount = value;
     emit updated(id, upper->getValue(), lower->getValue(), center->getValue(), 2);
 }
 void servo::closeCountUpdated(int16_t value){
+    if(_closeCount == value){
+        return;
+    }
+    _closeCount = value;
     emit updated(id, upper->getValue(), lower->getValue(), center->getValue(), 3);
 }
 void servo::onOpenClicked(){

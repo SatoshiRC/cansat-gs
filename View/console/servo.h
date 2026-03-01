@@ -40,6 +40,10 @@ private:
     Counter *lower;
 
     uint8_t id;
+
+    uint16_t _openCount = 800;
+    uint16_t _closeCount = 800;
+    uint16_t _centerCount = 800;
 };
 
 #endif // SERVO_H
