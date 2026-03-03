@@ -29,20 +29,6 @@ bool commandVM::connectSerial(QSerialPortInfo portInfo, qint32 baudrate){
     serial->setBaudRate(baudrate);
     serial->setPort(portInfo);
     bool res = serial->open(QIODeviceBase::ReadWrite);
-    if(res == true){
-        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_prachuteLeft);
-        manager->transmit(command::COMMAND_ID::Request);
-        QTimer::singleShot(200,[](){});
-        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_prachuteRight);
-        manager->transmit(command::COMMAND_ID::Request);
-        QTimer::singleShot(200,[](){});
-        request.setRequestCommandId(command::COMMAND_ID::ServoConfig_stabilizer);
-        manager->transmit(command::COMMAND_ID::Request);
-        QTimer::singleShot(200,[](){});
-        request.setRequestCommandId(command::COMMAND_ID::Goal);
-        manager->transmit(command::COMMAND_ID::Request);
-        QTimer::singleShot(200,[](){});
-    }
     return res;
 }
 
