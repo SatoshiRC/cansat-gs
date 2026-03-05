@@ -61,6 +61,8 @@ void MainWindow::binding(){
     connect(commandVm, &commandVM::accelUpdated, stateViewr->imuView, &ImuView::updateAccel);
     connect(commandVm, &commandVM::gyroUpdated, stateViewr->imuView, &ImuView::updateGyro);
     connect(commandVm, &commandVM::magnetUpdated, stateViewr->imuView, &ImuView::updateMagnet);
+    connect(commandVm, &commandVM::decentLogUpdate, stateViewr->decentLogView, &DecentLogView::update);
+    connect(commandVm, &commandVM::gncLogUpdate, stateViewr->navigationLogView, &NavigationLogView::update);
 
     connect(console->ParachuteLeft, &servo::updated, commandVm, &commandVM::updateServo);
     connect(console->ParachuteRight, &servo::updated, commandVm, &commandVM::updateServo);

@@ -20,6 +20,7 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::ServoConfig_stabilizer] = static_cast<command::Base*>(&servoConfigStabilizer);
     (*manager)[command::COMMAND_ID::GPS] = static_cast<command::Base*>(&gps);
     (*manager)[command::COMMAND_ID::IMU] = static_cast<command::Base*>(&imu);
+    (*manager)[command::COMMAND_ID::DecentLog] = static_cast<command::DecentLog*>(&decentLog);
 
     connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
     connect(serial, &QSerialPort::errorOccurred, this, &commandVM::catchSerialError);
@@ -69,6 +70,15 @@ void commandVM::readyReadSerial(){
     case command::COMMAND_ID::AbsoluteNavigationLog:
         break;
     case command::COMMAND_ID::RelativeNavigationLog:
+        emit gncLogUpdate(relativeNavigation.getData().leftMotorPower(),
+                          relativeNavigation.getData().rightMotorPower(),
+                          relativeNavigation.getData().headingDirection(),
+                          relativeNavigation.getData().relativePositionNorth(),
+                          relativeNavigation.getData().relativePositionEast(),
+                          relativeNavigation.getData().isDetectedGoalOnCamera(),
+                          relativeNavigation.getData().isDetectedGoalOnTof(),
+                          relativeNavigation.getData().tofDistance(),
+                          relativeNavigation.getData().goalDirection());
         break;
     case command::COMMAND_ID::ServoConfig_prachuteLeft:
         servoConfig = servoConfigParachuteLeft.getData();
@@ -91,6 +101,13 @@ void commandVM::readyReadSerial(){
         emit accelUpdated(imu.getData().accel());
         emit gyroUpdated(imu.getData().gyro());
         emit magnetUpdated(imu.getData().magnet());
+        break;
+    case command::COMMAND_ID::DecentLog:
+        emit decentLogUpdate(decentLog.getData().altitude,
+                             decentLog.getData().isParachuteReleased,
+                             decentLog.getData().isStabilizerDeploied,
+                             decentLog.getData().leftMotorPower,
+                             decentLog.getData().rightMotorPower);
         break;
     default:
         break;
@@ -152,7 +169,7 @@ void commandVM::exportData(){
 }
 
 void commandVM::loadData(std::filesystem::path &name){
-    if(file->openMode() != QIODeviceBase::NotOpen && file->fileName() != QString(name.filename().native())){
+    if(file->openMode() != QIODeviceBase::NotOpen && file->fileName() != QString(name.filename().c_str())){
         file->close();
         file->setFileName(name);
         file->open(QIODeviceBase::ReadWrite);

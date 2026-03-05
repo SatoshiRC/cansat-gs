@@ -30,6 +30,7 @@ class commandVM : public QObject
     command::ServoConfig_stabilizer servoConfigStabilizer;
     command::Gps gps;
     command::Imu imu;
+    command::DecentLog decentLog;
 
     QSerialPort *serial;
     QFile *file;
@@ -67,6 +68,10 @@ signals:
     void servoParachuteLeftUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
     void servoParachuteRightUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
     void servoStablizerUpdated(uint16_t _openCount, uint16_t _closeCount, uint16_t _centerCount, uint8_t state);
+
+    void decentLogUpdate(qint16 altitude, bool isParachuteReelased, bool isStabilizerDeploied, qint16 leftMotorPower, qint16 rightMotorPower);
+    void gncLogUpdate(int8_t leftMotorPower, int8_t rightMotorPower, int16_t headingDirection, int32_t positionNorth, int32_t positionEast, bool isGoalDetectedByCamera, bool isGoalDetectedByTof, int16_t tofDistance, int16_t goalDirection);
+
 };
 
 #endif // COMMANDVM_H
