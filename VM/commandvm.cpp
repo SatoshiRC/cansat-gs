@@ -22,6 +22,8 @@ commandVM::commandVM(QObject *parent)
     (*manager)[command::COMMAND_ID::IMU] = static_cast<command::Base*>(&imu);
     (*manager)[command::COMMAND_ID::DecentLog] = static_cast<command::DecentLog*>(&decentLog);
 
+    logger = new Logging(this);
+
     connect(serial, &QSerialPort::readyRead, this, &commandVM::readyReadSerial);
     connect(serial, &QSerialPort::errorOccurred, this, &commandVM::catchSerialError);
 }
@@ -79,6 +81,15 @@ void commandVM::readyReadSerial(){
                           relativeNavigation.getData().isDetectedGoalOnTof(),
                           relativeNavigation.getData().tofDistance(),
                           relativeNavigation.getData().goalDirection());
+        logger->pushNavigationlog(relativeNavigation.getData().leftMotorPower(),
+                          relativeNavigation.getData().rightMotorPower(),
+                          relativeNavigation.getData().headingDirection(),
+                          relativeNavigation.getData().relativePositionNorth(),
+                          relativeNavigation.getData().relativePositionEast(),
+                          relativeNavigation.getData().isDetectedGoalOnCamera(),
+                          relativeNavigation.getData().isDetectedGoalOnTof(),
+                          relativeNavigation.getData().tofDistance(),
+                          relativeNavigation.getData().goalDirection());
         break;
     case command::COMMAND_ID::ServoConfig_prachuteLeft:
         servoConfig = servoConfigParachuteLeft.getData();
@@ -104,6 +115,11 @@ void commandVM::readyReadSerial(){
         break;
     case command::COMMAND_ID::DecentLog:
         emit decentLogUpdate(decentLog.getData().altitude,
+                             decentLog.getData().isParachuteReleased,
+                             decentLog.getData().isStabilizerDeploied,
+                             decentLog.getData().leftMotorPower,
+                             decentLog.getData().rightMotorPower);
+        logger->pushDecentlog(decentLog.getData().altitude,
                              decentLog.getData().isParachuteReleased,
                              decentLog.getData().isStabilizerDeploied,
                              decentLog.getData().leftMotorPower,

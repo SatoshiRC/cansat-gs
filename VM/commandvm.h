@@ -10,6 +10,7 @@
 #include <QTimer>
 
 #include "Model/command.h"
+#include "Model/logging.h"
 
 
 class commandVM : public QObject
@@ -31,6 +32,8 @@ class commandVM : public QObject
     command::Gps gps;
     command::Imu imu;
     command::DecentLog decentLog;
+
+    Logging *logger;
 
     QSerialPort *serial;
     QFile *file;
